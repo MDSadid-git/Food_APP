@@ -4,7 +4,7 @@ import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useStore} from '../store/store';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import {COLORS} from '../theme/theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 import HearderBar from '../components/HearderBar';
 
 const getCategoriesFromData = (data: any) => {
@@ -51,6 +51,9 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.ScrollViewFlex}>
         <HearderBar />
+        <Text style={styles.ScreenTitle}>
+          Find The Best {'\n'}Products for you
+        </Text>
       </ScrollView>
     </View>
   );
@@ -63,6 +66,12 @@ const styles = StyleSheet.create({
   },
   ScrollViewFlex: {
     flexGrow: 1,
+  },
+  ScreenTitle: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_28,
+    color: COLORS.primaryWhiteHex,
+    paddingLeft: SPACING.space_30,
   },
 });
 export default HomeScreen;
