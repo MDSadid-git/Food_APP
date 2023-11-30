@@ -1,11 +1,26 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable prettier/prettier */
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import React, {useState} from 'react';
 import {useStore} from '../store/store';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../theme/theme';
 import HearderBar from '../components/HearderBar';
+import CustomIcon from '../components/CustomIcon';
 
 const getCategoriesFromData = (data: any) => {
   let temp: any = {};
@@ -35,7 +50,7 @@ const HomeScreen = () => {
   const [categories, setCategories] = useState(
     getCategoriesFromData(CoffeeList),
   );
-  const [searchText, setSeacrhText] = useState(undefined);
+  const [searchText, setSeacrhText] = useState('');
   const [categoryIndex, setCategoryIndex] = useState({
     index: 0,
     category: categories[0],
@@ -54,6 +69,29 @@ const HomeScreen = () => {
         <Text style={styles.ScreenTitle}>
           Find The Best {'\n'}Products for you
         </Text>
+        {/* Search area start */}
+        <View style={styles.inputContainer}>
+          <TouchableOpacity onPress={() => {}}>
+            <CustomIcon
+              style={styles.inputIcon}
+              name="search"
+              size={FONTSIZE.size_18}
+              color={
+                searchText.length > 0
+                  ? COLORS.primaryPinkHex
+                  : COLORS.primaryLightGreyHex
+              }
+            />
+          </TouchableOpacity>
+          <TextInput
+            placeholder="Find Your Products"
+            value={searchText}
+            onChangeText={text => setSeacrhText(text)}
+            placeholderTextColor={COLORS.primaryLightGreyHex}
+            style={styles.TextInputContainer}
+          />
+        </View>
+        {/* Search area end */}
       </ScrollView>
     </View>
   );
@@ -72,6 +110,23 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_28,
     color: COLORS.primaryWhiteHex,
     paddingLeft: SPACING.space_30,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    margin: SPACING.space_30,
+    borderRadius: BORDERRADIUS.radius_20,
+    backgroundColor: COLORS.primaryDarkGreyHex,
+    alignItems: 'center',
+  },
+  inputIcon: {
+    marginHorizontal: SPACING.space_20,
+  },
+  TextInputContainer: {
+    flex: 1,
+    height: SPACING.space_20 * 3,
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryWhiteHex,
   },
 });
 export default HomeScreen;
