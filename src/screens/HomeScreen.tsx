@@ -24,7 +24,7 @@ import CustomIcon from '../components/CustomIcon';
 
 const getCategoriesFromData = (data: any) => {
   let temp: any = {};
-  for (let i = 0; i < data.lenght; i++) {
+  for (let i = 0; i < data.length; i++) {
     if (temp[data[i].name] == undefined) {
       temp[data[i].name] = 1;
     } else {
@@ -44,6 +44,7 @@ const getCoffeeList = (category: string, data: any) => {
     return coffeelist;
   }
 };
+
 const HomeScreen = () => {
   const CoffeeList = useStore((state: any) => state.CoffeeList);
   const BeanList = useStore((state: any) => state.BeanList);
@@ -59,6 +60,7 @@ const HomeScreen = () => {
     getCoffeeList(categoryIndex.category, CoffeeList),
   );
   const tabBarHeight = useBottomTabBarHeight();
+  console.log('sort', sortedCoffee.length);
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar />
@@ -93,6 +95,43 @@ const HomeScreen = () => {
         </View>
         {/* Search area end */}
       </ScrollView>
+      {/* Category Scrooller area start */}
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.CategoryScrollViiewStyle}>
+        {categories.map((data, index) => (
+          <View
+            key={index.toString()}
+            style={styles.CategoryScrollViewContainer}>
+            <TouchableOpacity
+              style={styles.CategoryScroolViewItem}
+              onPress={() => {
+                setCategoryIndex({index: index, category: categories[index]});
+                setSortedCoffee([
+                  ...getCoffeeList(categories[index], CoffeeList),
+                ]);
+              }}>
+              <Text
+                style={[
+                  styles.CategoryText,
+                  categoryIndex.index == index
+                    ? {color: COLORS.primaryPinkHex}
+                    : {color: COLORS.primaryWhiteHex},
+                ]}>
+                {data}
+              </Text>
+              {categoryIndex.index == index ? (
+                <View style={styles.ActiveCategory} />
+              ) : (
+                <></>
+              )}
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+      {/* Category Scrooller area end */}
     </View>
   );
 };
@@ -126,7 +165,27 @@ const styles = StyleSheet.create({
     height: SPACING.space_20 * 3,
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryPinkHex,
+  },
+  CategoryScrollViiewStyle: {
+    paddingHorizontal: SPACING.space_20,
+    marginBottom: SPACING.space_20,
+  },
+  CategoryScrollViewContainer: {},
+  CategoryScroolViewItem: {},
+  CategoryText: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_14,
     color: COLORS.primaryWhiteHex,
+    marginBottom: SPACING.space_4,
+    marginRight: SPACING.space_8,
+  },
+  ActiveCategory: {
+    height: SPACING.space_12,
+    width: SPACING.space_12,
+    backgroundColor: COLORS.primaryPinkHex,
+    borderTopEndRadius: BORDERRADIUS.radius_10,
+    borderTopLeftRadius: BORDERRADIUS.radius_10,
   },
 });
 export default HomeScreen;
